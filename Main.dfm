@@ -1,9 +1,13 @@
 inherited fmMain: TfmMain
-  Caption = 'fmMain'
+  Caption = #1057#1082#1083#1072#1076
   Menu = mmMenu
   ExplicitHeight = 290
   PixelsPerInch = 96
   TextHeight = 13
+  inherited StatusBar: TStatusBar
+    ExplicitLeft = 0
+    ExplicitWidth = 505
+  end
   object mmMenu: TMainMenu
     Left = 224
     Top = 64

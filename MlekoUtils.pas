@@ -228,7 +228,8 @@ function GetEntityTable(KeyField, TextField: String): String;
 function SelectMLKItemsByDialog(MLKForm: TCFLMLKCustomForm; Items: TStrings;
          OwnerName, ParamName, ParamCode: string;
          MultiSelect: BOOL = True; KeyValues: TStrings = nil;
-         SQLFilter: string = ''; UpdateEvent: TNotifyEvent = nil): Integer;
+         SQLFilter: string = ''; UpdateEvent: TNotifyEvent = nil;
+         KeyValue: string = ''): Integer;
 function SelectMLKItemsInEditor( OwnerName: string; SelectEditor: TValueListEditor; SelectArray: TStringListArray;
                                  Temp: TStrings = nil; Delim: string = ', '): Integer;
 
@@ -2411,7 +2412,8 @@ end;
 function SelectMLKItemsByDialog(MLKForm: TCFLMLKCustomForm; Items: TStrings;
   OwnerName, ParamName, ParamCode: string;
   MultiSelect: BOOL = True; KeyValues: TStrings = nil;
-  SQLFilter: string = ''; UpdateEvent: TNotifyEvent  = nil): Integer;
+  SQLFilter: string = ''; UpdateEvent: TNotifyEvent  = nil;
+  KeyValue: string = ''): Integer;
 var
   Keys: TStrings;
   i, c, v: Integer;
@@ -2425,8 +2427,10 @@ begin
   l_query_filter := SQLFilter;
   l_style := 'unknown';
   is_multiselect:= MultiSelect;
+  if not is_multiselect then
+     dmDataModule.Del_session_params(OwnerName, ParamName, '#NULL#');
   if TCFLMLKSelectDlg.OpenHoldSelect(l_Owner, l_param_name, l_param_code,
-    is_multiselect, l_query_filter, l_style, UpdateEvent) then
+    is_multiselect, l_query_filter, l_style, UpdateEvent, KeyValue) then
   begin
     if (KeyValues<>nil) then
        Keys:= KeyValues else
@@ -2434,7 +2438,7 @@ begin
     try
       Result := dmDataModule.get_selected_value(OwnerName, ParamName, ParamCode,
         Items, Keys);
-      if (KeyValues=nil) then
+      if (KeyValues = nil) and (Items <> nil) then
         for i := 0 to Result - 1 do
         begin
           Val(Keys[i], v, c);
@@ -2444,8 +2448,8 @@ begin
             Items[i] := Items[i] + '=' + Keys[i];
         end;
     finally
-      if not is_multiselect then
-         dmDataModule.Del_session_params(OwnerName, ParamName, Keys[0]);
+//      if not is_multiselect then
+//         dmDataModule.Del_session_params(OwnerName, ParamName, Keys[0]);
       if (KeyValues=nil) then Keys.Free;
     end;
   end;

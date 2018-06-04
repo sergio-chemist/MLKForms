@@ -500,13 +500,23 @@ type
     function get_entity_param(p_entity_code: string): Tstrings; overload;
     function get_entity_param(attribute_id: Integer): Tstrings; overload;
     function get_prop_dlg_attribute_param(attribute_id: Integer): TStrings;
+    function get_sql_fields_and_table(entity_code: string; var table_name, key_field,
+      txt_field: string; entity_params: TStrings = nil): Boolean;
+    function get_table_sql( table_name, key_field, txt_field: string;
+                            where_cond: string = ''): WideString;
     function get_selected_sql(p_owner_name: string; p_param_name: string; p_table_name: string; p_key_field: string; p_txt_field: string):
       WideString;
       overload;
+    function get_selected_and_table_sql(
+         owner_name, param_name, table_name, key_field, txt_field: string;
+         var selected_sql, table_sql: string): Boolean;
     function get_selected_sql(p_owner_name: string; p_param_name: string; p_entity_code: string): WideString; overload;
-    function get_selected_value(p_owner_name: string; p_param_name: string; p_entity_code: string; var p_txt_value: TStrings; var p_key_value:
+    function get_selected_value(p_owner_name: string; p_param_name: string; p_entity_code: string; p_txt_value: TStrings; p_key_value:
       TStrings): Integer; overload;
-    function get_selected_value(p_owner_name: string; p_param_name: string; p_entity_code: string; var p_txt_value: string; var p_key_value: string):
+    function get_selected_value(
+             p_owner_name: string; p_param_name: string; p_entity_code: string;
+             var p_txt_value, p_key_value: string;
+             get_all_items: Boolean = False):
       Integer; overload;
     function parse_flt_sql(p_sql: WideString; p_Owner_Name: string; p_Entity_Name: string): WideString;
     function get_prop_dlg_attribute_owner(attribute_id: Integer): string;
@@ -1355,6 +1365,14 @@ begin
   end;
 end;
 
+function TdmDataModule.get_table_sql( table_name, key_field, txt_field: string;
+                                      where_cond: string = ''): WideString;
+begin
+  Result:= Format('select %s, %s from %s', [key_field, txt_field, table_name]);
+  if where_cond <> '' then
+    Result:= Format('%s where %s', [Result, where_cond]);
+end;
+
 function TdmDataModule.get_selected_sql(p_owner_name: string; p_param_name: string; p_table_name: string; p_key_field: string; p_txt_field: string):
   WideString;
 begin
@@ -1385,36 +1403,85 @@ begin
   end;
 end;
 
-function TdmDataModule.get_selected_value(p_owner_name: string; p_param_name: string; p_entity_code: string; var p_txt_value: TStrings; var
-  p_key_value: TStrings): Integer;
+function TdmDataModule.get_sql_fields_and_table(
+         entity_code: string; var table_name, key_field, txt_field: string;
+         entity_params: TStrings = nil): Boolean;
+var
+  ls_entity_param: TStrings;
+begin
+   Result:= False;
+   if (entity_params = nil) and (entity_code<>'') then
+      ls_entity_param := get_entity_param(entity_code) else
+      ls_entity_param := entity_params;
+   try
+     if ls_entity_param <> nil then
+     begin
+       key_field := trim(ls_entity_param.Values['key_field']);
+       txt_field := trim(ls_entity_param.Values['txt_field']);
+       table_name := trim(ls_entity_param.Values['name']);
+       Result:= True;
+     end;
+   finally
+    if (ls_entity_param <> entity_params) then
+       ls_entity_param.Free;
+   end;
+end;
+
+function TdmDataModule.get_selected_and_table_sql(
+         owner_name, param_name, table_name, key_field, txt_field: string;
+         var selected_sql, table_sql: string): Boolean;
+var
+  l_owner_name, l_param_name, l_table_name, l_key_field, l_txt_field: string;
+  ls_entity_param: TStrings;
+begin
+  Result:= False; selected_sql := '';
+  if (key_field<>'') and (txt_field<>'') and (table_name<>'') then
+  begin
+    if (owner_name<>'') and (param_name<>'') then
+       selected_sql := get_selected_sql(owner_name, param_name, table_name, key_field, txt_field);
+    table_sql:= get_table_sql(table_name, key_field, txt_field);
+    Result:= True;
+  end;
+end;
+
+function TdmDataModule.get_selected_value( p_owner_name: string; p_param_name: string; p_entity_code: string;
+                                           p_txt_value: TStrings;
+                                           p_key_value: TStrings): Integer;
 var
   i: Integer;
   l_sql: string;
 begin
   l_sql := get_selected_sql(p_owner_name, p_param_name, p_entity_code);
-  p_txt_value.Clear;
-  p_key_value.Clear;
+  if (p_txt_value <> nil) then p_txt_value.Clear;
+  if (p_key_value <> nil) then p_key_value.Clear;
   i := 0;
-  if (p_entity_code <> 'DATE') and (p_entity_code <> 'BOOLEAN') and (p_entity_code <> 'FLOAT') and (p_entity_code <> 'TEXT') then
-  begin
-    qfo.close;
-    qfo.SQL.Clear;
-    qfo.SQL.Add(l_sql);
-    qfo.Open;
-    qfo.first;
-    while not qfo.Eof do
-    begin
-      p_txt_value.Add(qfo.fieldByName('txt_field').AsString);
-      p_key_value.Add(qfo.fieldByName('key_field').AsString);
-      qfo.Next;
-      inc(i);
-    end;
-  end;
+  if (p_txt_value <> nil) or (p_key_value <> nil) then
+    if (p_entity_code <> 'DATE') and (p_entity_code <> 'BOOLEAN') and (p_entity_code <> 'FLOAT') and (p_entity_code <> 'TEXT') then
+      begin
+        qfo.close;
+        qfo.SQL.Clear;
+        qfo.SQL.Add(l_sql);
+        qfo.Open;
+        qfo.first;
+        while not qfo.Eof do
+        begin
+        if (p_txt_value <> nil) then
+          p_txt_value.Add(qfo.fieldByName('txt_field').AsString);
+        if (p_key_value <> nil) then
+          p_key_value.Add(qfo.fieldByName('key_field').AsString);
+          qfo.Next;
+          inc(i);
+        end;
+      end;
   result := i;
 end;
 
-function TdmDataModule.get_selected_value(p_owner_name: string; p_param_name: string; p_entity_code: string; var p_txt_value: string; var
-  p_key_value: string): Integer;
+function TdmDataModule.get_selected_value(
+         p_owner_name: string;
+         p_param_name: string;
+         p_entity_code: string;
+         var p_txt_value, p_key_value: string;
+         get_all_items: Boolean = False): Integer;
 var
   l_txt_value: TStrings;
   l_key_value: TStrings;
@@ -1423,8 +1490,15 @@ begin
   l_key_value := TStringList.Create;
   try
     result := get_selected_value(p_owner_name, p_param_name, p_entity_code, l_txt_value, l_key_value);
-    p_txt_value := l_txt_value[0];
-    p_key_value := l_key_value[0];
+    if get_all_items then
+       begin
+         p_txt_value := l_txt_value.CommaText;
+         p_key_value := l_key_value.CommaText;
+       end else
+       begin
+         p_txt_value := l_txt_value[0];
+         p_key_value := l_key_value[0];
+       end;
   finally
     l_txt_value.Free;
     l_key_value.Free;

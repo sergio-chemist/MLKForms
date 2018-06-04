@@ -86,8 +86,9 @@
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <DCC_Define>NoCIT;NoXLS;NoRXLib;$(DCC_Define)</DCC_Define>
+        <DCC_Define>NoXLS;NoRXLib;$(DCC_Define)</DCC_Define>
         <DCC_ExeOutput>D:\Projects\DXP\MLKForms\$(Platform)\$(Config)</DCC_ExeOutput>
+        <DCC_UnitSearchPath>..\MLKComps;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -194,6 +195,20 @@
             <Form>BCLogonDlg</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="CFLMLKCustom.pas">
+            <Form>CFLMLKCustomForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="CFLMLKSelect.pas">
+            <Form>CFLMLKSelectDlg</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="MlekoUtils.pas"/>
+        <DCCReference Include="MlekoSelectUser.pas">
+            <Form>MlekoSelectUserDlg</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UtilsCommon.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -222,7 +237,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="Win32\Debug\MLKTest.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="..\MLKForms\Win32\Debug\MLKTest.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>MLKTest.exe</RemoteName>
                         <Overwrite>true</Overwrite>

@@ -22,7 +22,12 @@ uses
   DmCommon in 'DmCommon.pas',
   MlkData in 'MlkData.pas' {dmDataModule: TDataModule},
   MlekoForm in 'MlekoForm.pas' {MlekoForm},
-  BCLogon in 'BCLogon.pas' {BCLogonDlg};
+  BCLogon in 'BCLogon.pas' {BCLogonDlg},
+  CFLMLKCustom in 'CFLMLKCustom.pas' {CFLMLKCustomForm},
+  CFLMLKSelect in 'CFLMLKSelect.pas' {CFLMLKSelectDlg},
+  MlekoUtils in 'MlekoUtils.pas',
+  MlekoSelectUser in 'MlekoSelectUser.pas' {MlekoSelectUserDlg},
+  UtilsCommon in 'UtilsCommon.pas';
 
 {$R *.res}
 

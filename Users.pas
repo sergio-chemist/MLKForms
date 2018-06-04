@@ -53,6 +53,7 @@ type
     Descending: Boolean;
     SearchString: string;
     procedure ExecuteActionWithUser(Option: Integer);
+    procedure EditUser;
   public
     { Public declarations }
   end;
@@ -68,11 +69,6 @@ uses MlkData, MlekoUtils;
 
 {$R *.DFM}
 
-procedure EditUser();
-begin
-
-end;
-
 procedure ShowUsers;
 begin
  fmUsers:=TfmUsers.Create(Application);
@@ -84,6 +80,24 @@ begin
  fmUsers.quUsers.Close;
  fmUsers.Free;
  end;
+end;
+
+procedure TfmUsers.EditUser();
+const
+  sParamName = 'SelectUserDialog';
+  sCode = 'USERS';
+  bMultiSelect = True;
+var
+   p_txt_value, p_key_value: string;
+begin
+  if MlekoUtils.SelectMLKItemsByDialog(
+  nil, nil, Self.Name, sParamName, sCode, bMultiSelect, nil, '', nil,
+  quUsers.FieldByName('UserNo').AsString) > 0 then
+  begin
+    if (dmDataModule.get_selected_value(Self.Name, sParamName, sCode, p_txt_value, p_key_value, true) <> 0) then
+    ShowMessage(Format('Selected: Keys=%s ; Values = %s', [p_key_value, p_txt_value])) else
+    ShowMessage('Selected values not found');
+  end;
 end;
 
 procedure TfmUsers.ExecuteActionWithUser(Option: Integer);

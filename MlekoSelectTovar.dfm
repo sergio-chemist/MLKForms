@@ -11,10 +11,10 @@ inherited MlekoSelectTovarDlg: TMlekoSelectTovarDlg
   inherited PageControl: TPageControl
     Width = 495
     Height = 350
-    ExplicitWidth = 629
+    ExplicitWidth = 495
     ExplicitHeight = 350
     inherited TabSheet1: TTabSheet
-      ExplicitWidth = 621
+      ExplicitWidth = 487
       ExplicitHeight = 322
       inherited Splitter: TSplitter
         Left = 265
@@ -25,11 +25,11 @@ inherited MlekoSelectTovarDlg: TMlekoSelectTovarDlg
       inherited PanelGrid: TPanel
         Width = 265
         Height = 322
-        ExplicitWidth = 399
+        ExplicitWidth = 265
         ExplicitHeight = 322
         inherited ToolBar: TToolBar
           Width = 263
-          ExplicitWidth = 397
+          ExplicitWidth = 263
         end
         inherited DBGrid: TDBGridEh
           Width = 263
@@ -39,7 +39,7 @@ inherited MlekoSelectTovarDlg: TMlekoSelectTovarDlg
       inherited PanelSelect: TPanel
         Left = 268
         Height = 322
-        ExplicitLeft = 402
+        ExplicitLeft = 268
         ExplicitHeight = 322
         inherited DBGridSelection: TDBGridEh
           Height = 298
@@ -51,20 +51,21 @@ inherited MlekoSelectTovarDlg: TMlekoSelectTovarDlg
     Left = 412
     Top = 356
     Height = 27
-    ExplicitTop = 386
+    ExplicitLeft = 412
+    ExplicitTop = 356
     ExplicitHeight = 27
   end
   inherited ButtonCancel: TButton
     Left = 412
     Top = 389
-    ExplicitTop = 419
+    ExplicitLeft = 412
+    ExplicitTop = 389
   end
-  inherited pnlFilter: TPanel
+  inherited pnlFilter: TMlkFilterPanel
     Top = 350
     Height = 72
-    ExplicitLeft = 0
     ExplicitTop = 350
-    ExplicitHeight = 102
+    ExplicitHeight = 72
   end
   inherited ActionList: TActionList
     inherited ActionItemDel: TAction
@@ -77,7 +78,7 @@ inherited MlekoSelectTovarDlg: TMlekoSelectTovarDlg
     Filter = 'vidname = '#39' '#39
     BeforeOpen = QueryBeforeOpen
   end
-  inherited SQLBuilder: TMLKSQLBuilder
+  inherited SQLBuilder: TMlkSQLBuilder
     Select.Strings = (
       'tovarno      AS id'
       '       ,tovarno'

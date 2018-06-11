@@ -11,11 +11,11 @@ inherited MlekoSelectFIrmDlg: TMlekoSelectFIrmDlg
   inherited PageControl: TPageControl
     Width = 637
     Height = 390
-    ExplicitWidth = 615
+    ExplicitWidth = 637
     ExplicitHeight = 390
     inherited TabSheet1: TTabSheet
-      ExplicitWidth = 607
-      ExplicitHeight = 365
+      ExplicitWidth = 629
+      ExplicitHeight = 362
       inherited Splitter: TSplitter
         Left = 407
         Height = 362
@@ -25,11 +25,11 @@ inherited MlekoSelectFIrmDlg: TMlekoSelectFIrmDlg
       inherited PanelGrid: TPanel
         Width = 407
         Height = 362
-        ExplicitWidth = 385
-        ExplicitHeight = 365
+        ExplicitWidth = 407
+        ExplicitHeight = 362
         inherited ToolBar: TToolBar
           Width = 405
-          ExplicitWidth = 383
+          ExplicitWidth = 405
           object ToolButton7: TToolButton
             Left = 146
             Top = 0
@@ -57,8 +57,8 @@ inherited MlekoSelectFIrmDlg: TMlekoSelectFIrmDlg
       inherited PanelSelect: TPanel
         Left = 410
         Height = 362
-        ExplicitLeft = 388
-        ExplicitHeight = 365
+        ExplicitLeft = 410
+        ExplicitHeight = 362
         inherited DBGridSelection: TDBGridEh
           Height = 338
         end
@@ -70,7 +70,7 @@ inherited MlekoSelectFIrmDlg: TMlekoSelectFIrmDlg
     Top = 423
     ParentShowHint = False
     ShowHint = True
-    ExplicitLeft = 532
+    ExplicitLeft = 554
     ExplicitTop = 423
   end
   inherited ButtonCancel: TButton
@@ -78,14 +78,13 @@ inherited MlekoSelectFIrmDlg: TMlekoSelectFIrmDlg
     Top = 394
     ParentShowHint = False
     ShowHint = True
-    ExplicitLeft = 532
+    ExplicitLeft = 554
     ExplicitTop = 394
   end
-  inherited pnlFilter: TPanel
+  inherited pnlFilter: TMlkFilterPanel
     Top = 390
     Width = 526
     Height = 62
-    ExplicitLeft = 0
     ExplicitTop = 390
     ExplicitWidth = 526
     ExplicitHeight = 62
@@ -104,7 +103,6 @@ inherited MlekoSelectFIrmDlg: TMlekoSelectFIrmDlg
     ShowHint = True
     TabOrder = 4
     Visible = False
-    ExplicitLeft = 731
   end
   inherited Query: TMSQuery
     SQL.Strings = (
@@ -123,7 +121,7 @@ inherited MlekoSelectFIrmDlg: TMlekoSelectFIrmDlg
         Name = '_dolg_sql'
       end>
   end
-  inherited SQLBuilder: TMLKSQLBuilder
+  inherited SQLBuilder: TMlkSQLBuilder
     Select.Strings = (
       'a.postno    AS id'
       '       ,name     AS shortname'

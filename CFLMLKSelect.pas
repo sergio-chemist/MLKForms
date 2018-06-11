@@ -8,7 +8,7 @@ uses
   StdCtrls, ComCtrls, ToolWin, DB,
   DBAccess, MsAccess, CFLMLKCustom, MemDS, System.Actions, DBGridEhGrouping,
   ToolCtrlsEh, DBGridEhToolCtrls, DynVarsEh, EhLibVCL, GridsEh, DBAxisGridsEh,
-  DBGridEh, MLKSQLBuilder;
+  DBGridEh, MLKSQLBuilder, UMlkFilterPanel;
 
 type
 
@@ -66,7 +66,7 @@ type
     ToolButton3: TToolButton;
     ToolButton4: TToolButton;
     ToolButton5: TToolButton;
-    pnlFilter: TPanel;
+    pnlFilter: TMlkFilterPanel;
     DBGrid: TDBGridEh;
     DBGridSelection: TDBGridEh;
     SQLBuilder: TMLKSQLBuilder;

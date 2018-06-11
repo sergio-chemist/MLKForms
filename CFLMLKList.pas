@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, CFLMLKMDIChild, MsAccess, Menus,
   DB, MemDS, DBAccess, Grids, DBGrids,
   Controls, ExtCtrls, ComCtrls,
-  Classes, ActnList, ToolWin, Forms, MLKSQLBuilder, System.Actions;
+  Classes, ActnList, ToolWin, Forms, DBGridEhGrouping, ToolCtrlsEh, DBGridEhToolCtrls, DynVarsEh,
+  MLKSQLBuilder, EhLibVCL, GridsEh, DBAxisGridsEh, DBGridEh, UMlkFilterPanel, System.Actions;
 
 type
   TSearchParamRec = record
@@ -30,11 +31,13 @@ type
     PageControlTop: TPageControl;
     TabSheet1: TTabSheet;
     PanelGrid: TPanel;
+    FilterPanel: TMlkFilterPanel;
     SQLBuilder: TMlkSQLBuilder;
     Query: TMSQuery;
     DS: TDataSource;
     ActionViewFilter: TAction;
     ActionViewFilterOff: TAction;
+    DBGrid: TDBGridEh;
     QueryStorage: TMSQuery;
     PopupMenuGrid: TPopupMenu;
     pmiInsert: TMenuItem;
@@ -58,12 +61,11 @@ type
     spCopyProfile: TMSStoredProc;
     ActionRestoreFormat: TAction;
     BtnLayot: TToolButton;
-    DBGrid: TDBGrid;
     procedure ActionViewRefreshExecute(Sender: TObject);
     function SQLBuilderGetOrderBy(Sender: TObject): string;
     procedure ActionViewFilterOffExecute(Sender: TObject);
     procedure ActionViewFilterExecute(Sender: TObject);
-    procedure DBGridTitlePressed(Sender: TDBGrid; Field: TField);
+    procedure DBGridTitlePressed(Sender: TDBGridEh; Field: TField);
     procedure ActionRowSelectExecute(Sender: TObject);
     procedure QueryAfterOpen(DataSet: TDataSet);
     procedure QueryAfterRefresh(DataSet: TDataSet);
@@ -94,7 +96,11 @@ var
 
 implementation
 
-uses Mlkdata, MlekoSelectUser;
+uses MlkData, DmCommon; //, MlekoSelectUser;
+//  , comp_TargetFilter_StringFilter, comp_TargetFilter_BooleanFilter
+//  , comp_TargetFilter_NumberFilter, comp_TargetFilter_LookupFilter
+//  , comp_TargetFilter_DictionaryFilter
+//  , comp_TargetFilter_CustomFilter, comp_TargetFilter_DateFilter;
 
 {$R *.dfm}
 
@@ -172,12 +178,12 @@ var
 //  FirstFilter: TtargetFilter_CustomFilter;
 begin
   inherited;
-  LastOrder := 10000;
+//  LastOrder := 10000;
 //  if DBGrid.Focused then
 //  begin
 //    for i := 0 to ComponentCount - 1 do
 //    begin
-//      if Components[i].ClassNameIs('TTargetFilter_Panel') and ((Components[i] as TTargetFilter_Panel).Parent = PageControlTop.ActivePage) then
+//      if Components[i].ClassNameIs('TMlkFilterPanel') and ((Components[i] as TMlkFilterPanel).Parent = PageControlTop.ActivePage) then
 //        for j := 0 to ComponentCount - 1 do
 //        begin
 //          if Components[j].InheritsFrom(TtargetFilter_CustomFilter)
@@ -195,7 +201,7 @@ begin
 //    DBGrid.SetFocus;
 end;
 
-procedure TCFLMLKListForm.DBGridTitlePressed(Sender: TDBGrid; Field: TField);
+procedure TCFLMLKListForm.DBGridTitlePressed(Sender: TDBGridEh; Field: TField);
 begin
   inherited;
   DBGrid.Refresh;
@@ -223,8 +229,8 @@ end;
 procedure TCFLMLKListForm.QueryAfterOpen(DataSet: TDataSet);
 begin
   inherited;
-//  FIsDatasetEmpty := (Query.Bof and Query.Eof);
-//  if CanAfterScroll then SetActionsEnabled;
+  FIsDatasetEmpty := (Query.Bof and Query.Eof);
+  if CanAfterScroll then SetActionsEnabled;
 //  ComponentProps.DefaultUser := IntToStr(data.UserNo);
 //  DBGrid.RestoreFormatFromStorage;
 end;
@@ -306,12 +312,12 @@ var
 begin
   inherited;
 //  for i := 0 to ComponentCount - 1 do
-//    if Components[i].ClassNameIs('TDBGrid') then
+//    if Components[i].ClassNameIs('TDBGridEh') then
 //    begin
-//      if Assigned((Components[i] as TDBGrid).PropStorage) then
+//      if Assigned((Components[i] as TDBGridEh).PropStorage) then
 //      begin
-//        (Components[i] as TDBGrid).PropStorage.DefaultUser := IntToStr(data.UserNo);
-//        (Components[i] as TDBGrid).SaveFormatToStorage;
+//        (Components[i] as TDBGridEh).PropStorage.DefaultUser := IntToStr(data.UserNo);
+//        (Components[i] as TDBGridEh).SaveFormatToStorage;
 //      end;
 //    end;
 end;
@@ -339,7 +345,7 @@ procedure TCFLMLKListForm.DBGridKeyPress(Sender: TObject; var Key: Char);
 var
  Found:boolean;
 begin
- if Key in Mlkdata.SearchSet then
+ if Key in MlkData.SearchSet then
   begin
    Found:=False;
    SearchString:=SearchString+Key;

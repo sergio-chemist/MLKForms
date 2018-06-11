@@ -8,7 +8,8 @@ uses
   ExtCtrls, StdCtrls,
   ComCtrls, ToolWin, Grids, DBGrids,
   PropFilerEh, MemDS, DBGridEh, Mask, DBCtrlsEh, DBLookupEh, DBGridEhGrouping, ToolCtrlsEh,
-  DBGridEhToolCtrls, DynVarsEh, MLKSQLBuilder, System.Actions, EhLibVCL, GridsEh, DBAxisGridsEh;
+  DBGridEhToolCtrls, DynVarsEh, MLKSQLBuilder, System.Actions, EhLibVCL, GridsEh, DBAxisGridsEh,
+  UMlkFilterPanel;
 
 type
   TMlekoSelectFirmDlg = class(TCFLMLKSelectDlg)

@@ -8,13 +8,15 @@ uses
   ExtCtrls, StdCtrls,
   ComCtrls, ToolWin, Grids, DBGrids,
   PropFilerEh,
-  MemDS, DBGridEhGrouping, ToolCtrlsEh, DBGridEhToolCtrls, DynVarsEh, MLKSQLBuilder, System.Actions,
-  EhLibVCL, GridsEh, DBAxisGridsEh, DBGridEh;
+  MemDS, DBGridEhGrouping, ToolCtrlsEh, DBGridEhToolCtrls, DynVarsEh, MlkCtrls, MlkMask,
+  MlkDBComboEdit, MLKSQLBuilder, System.Actions, UMlkFilterPanel, EhLibVCL, GridsEh, DBAxisGridsEh,
+  DBGridEh;
 
 type
   TMlekoSelectSotrudDlg = class(TCFLMLKSelectDlg)
     DSOtdels: TDataSource;
     quOtdels: TMSQuery;
+    ftOtdel: TMlkDBComboEdit;
     quDepts: TMSQuery;
     quDeptsOtdelNo: TSmallintField;
     quDeptsOtdelName: TStringField;
@@ -48,6 +50,14 @@ begin
    end else result:=false;
 end;
 
+//procedure TMlekoSelectSotrudDlg.FilterNamea_OnBeforeGetString(
+//  Sender: TTargetFilter_StringFilter; ConditionType: TStringConditionType;
+//  ConditionGroup: TStringConditionGroup; var LikeStr: String);
+//begin
+//  inherited;
+//    LikeStr := '%'+LikeStr+'%';
+//end;
+
 procedure TMlekoSelectSotrudDlg.SQLBuilderGetParams(Sender: TObject;
   var Params: TParams);
 begin
@@ -59,20 +69,20 @@ end;
 procedure TMlekoSelectSotrudDlg.ftOtdelSelectOk(Sender: TObject);
 begin
   inherited;
-  //IF ftOtdel.Text='' then ln_otdelNo:=-1 else ln_otdelNo:=StrToInt(ftOtdel.KeyFieldValue);
+  IF ftOtdel.Text='' then ln_otdelNo:=-1 else ln_otdelNo:=StrToInt(ftOtdel.KeyFieldValue);
 end;
 
 procedure TMlekoSelectSotrudDlg.FormCreate(Sender: TObject);
 begin
   inherited;
-  ln_otdelNo:=DmCommon.GlobalOtdelNo;
+  ln_otdelNo:= DmCommon.GlobalOtdelNo;
 end;
 
 procedure TMlekoSelectSotrudDlg.FormShow(Sender: TObject);
 begin
   inherited;
-//  ftOtdel.KeyFieldValue:=IntToStr(ln_OtdelNo);
-//  ftOtdel.GetLocateKey;
+  ftOtdel.KeyFieldValue:=IntToStr(ln_OtdelNo);
+  ftOtdel.GetLocateKey;
 end;
 
 initialization

@@ -1,23 +1,24 @@
 inherited CFLMLKListForm: TCFLMLKListForm
   Left = 762
+  ActiveControl = DBGrid
   Caption = 'CFLMLKListForm'
-  ClientHeight = 273
-  ClientWidth = 650
-  ExplicitWidth = 666
-  ExplicitHeight = 312
+  ClientHeight = 348
+  ClientWidth = 621
+  ExplicitWidth = 637
+  ExplicitHeight = 387
   PixelsPerInch = 96
   TextHeight = 13
   inherited StatusBar: TStatusBar
-    Top = 254
-    Width = 650
-    ExplicitTop = 254
-    ExplicitWidth = 650
+    Top = 329
+    Width = 621
+    ExplicitTop = 329
+    ExplicitWidth = 621
   end
   inherited ToolBar: TToolBar
-    Width = 650
+    Width = 621
     Height = 22
     AutoSize = True
-    ExplicitWidth = 650
+    ExplicitWidth = 621
     ExplicitHeight = 22
     object ToolBtnAdd: TToolButton
       Left = 0
@@ -61,7 +62,7 @@ inherited CFLMLKListForm: TCFLMLKListForm
   object PageControlTop: TPageControl [2]
     Left = 0
     Top = 22
-    Width = 650
+    Width = 621
     Height = 94
     ActivePage = TabSheet1
     Align = alTop
@@ -70,29 +71,52 @@ inherited CFLMLKListForm: TCFLMLKListForm
     object TabSheet1: TTabSheet
       Caption = #1060#1080#1083#1100#1090#1088#1099
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 497
+      ExplicitHeight = 0
+      object FilterPanel: TMlkFilterPanel
+        Left = 0
+        Top = 0
+        Width = 613
+        Height = 84
+        Align = alClient
+        BevelInner = bvLowered
+        BevelOuter = bvNone
+        TabOrder = 0
+        ExplicitWidth = 497
+      end
     end
   end
   object PanelGrid: TPanel [3]
     Left = 0
     Top = 116
-    Width = 650
-    Height = 138
+    Width = 621
+    Height = 213
     Align = alClient
     BorderWidth = 2
     Caption = 'PanelGrid'
     TabOrder = 3
-    object DBGrid: TDBGrid
+    ExplicitWidth = 505
+    ExplicitHeight = 96
+    object DBGrid: TDBGridEh
       Left = 3
       Top = 3
-      Width = 644
-      Height = 132
+      Width = 615
+      Height = 207
       Align = alClient
+      Ctl3D = True
+      DataSource = DS
+      DynProps = <>
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit]
+      ParentCtl3D = False
+      PopupMenu = PopupMenuGrid
       TabOrder = 0
-      TitleFont.Charset = DEFAULT_CHARSET
-      TitleFont.Color = clWindowText
-      TitleFont.Height = -11
-      TitleFont.Name = 'Tahoma'
-      TitleFont.Style = []
+      TitleParams.RowHeight = 17
+      OnKeyDown = DBGridKeyDown
+      OnKeyPress = DBGridKeyPress
+      object RowDetailData: TRowDetailPanelControlEh
+      end
     end
   end
   inherited ActionList: TActionList
@@ -206,7 +230,7 @@ inherited CFLMLKListForm: TCFLMLKListForm
       ImageIndex = 5
     end
   end
-  object SQLBuilder: TMLKSQLBuilder
+  object SQLBuilder: TMlkSQLBuilder
     OnGetOrderBy = SQLBuilderGetOrderBy
     Query = Query
     UseParams = True

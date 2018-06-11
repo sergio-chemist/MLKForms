@@ -23,10 +23,12 @@ inherited CFLMLKSelectDlg: TCFLMLKSelectDlg
     ActivePage = TabSheet1
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 506
     object TabSheet1: TTabSheet
       Caption = #1057#1087#1080#1089#1086#1082
-      ExplicitWidth = 498
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter: TSplitter
         Left = 399
         Top = 0
@@ -43,7 +45,6 @@ inherited CFLMLKSelectDlg: TCFLMLKSelectDlg
         Height = 311
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 276
         object ToolBar: TToolBar
           Left = 1
           Top = 1
@@ -59,7 +60,6 @@ inherited CFLMLKSelectDlg: TCFLMLKSelectDlg
           ParentShowHint = False
           ShowHint = True
           TabOrder = 0
-          ExplicitWidth = 274
           object ToolButtonRefresh: TToolButton
             Left = 0
             Top = 0
@@ -122,7 +122,6 @@ inherited CFLMLKSelectDlg: TCFLMLKSelectDlg
         ParentCtl3D = False
         TabOrder = 1
         Visible = False
-        ExplicitLeft = 279
         object ToolBar1: TToolBar
           Left = 1
           Top = 1
@@ -217,7 +216,7 @@ inherited CFLMLKSelectDlg: TCFLMLKSelectDlg
     ModalResult = 2
     TabOrder = 2
   end
-  object pnlFilter: TPanel [3]
+  object pnlFilter: TMlkFilterPanel [3]
     Left = 0
     Top = 339
     Width = 394
@@ -225,9 +224,6 @@ inherited CFLMLKSelectDlg: TCFLMLKSelectDlg
     Align = alLeft
     BevelOuter = bvLowered
     TabOrder = 3
-    ExplicitLeft = 3
-    ExplicitTop = 340
-    ExplicitHeight = 87
   end
   inherited ActionList: TActionList
     Left = 244
@@ -442,7 +438,7 @@ inherited CFLMLKSelectDlg: TCFLMLKSelectDlg
         Value = nil
       end>
   end
-  object SQLBuilder: TMLKSQLBuilder
+  object SQLBuilder: TMlkSQLBuilder
     OnGetWhere = SQLBuilderGetWhere
     Query = Query
     KeyFields.Strings = (

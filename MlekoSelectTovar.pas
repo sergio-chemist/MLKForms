@@ -8,7 +8,7 @@ uses
   StdCtrls,
   ComCtrls, ToolWin, Grids, DBGrids,
   PropFilerEh, MemDS, DBGridEhGrouping, ToolCtrlsEh, DBGridEhToolCtrls, DynVarsEh, MLKSQLBuilder,
-  System.Actions, EhLibVCL, GridsEh, DBAxisGridsEh, DBGridEh, Vcl.ExtCtrls;
+  System.Actions, EhLibVCL, GridsEh, DBAxisGridsEh, DBGridEh, Vcl.ExtCtrls, UMlkFilterPanel;
 
 type
   TMlekoSelectTovarDlg = class(TCFLMLKSelectDlg)
@@ -25,7 +25,7 @@ var
 
 implementation
 
-uses MlekoBlkParamPrivyazka, Meko_Blanc_Price;
+//uses MlekoBlkParamPrivyazka, Meko_Blanc_Price;
 
 {$R *.dfm}
 
@@ -41,17 +41,17 @@ end;
 procedure TMlekoSelectTovarDlg.QueryBeforeOpen(DataSet: TDataSet);
 begin
   inherited;
-   if   Meko_Blanc_Price.BLANC_PRICE.Y_N_Label.Caption = 'Y' then
-         begin
-           Query.Filter:=Query.Filter + Meko_Blanc_Price.BLANC_PRICE.ITOG_VIDNAME_Memo.Lines.Text;
-           Query.Filtered:=True;
-         end
-         else  if MlekoBlkParamPrivyazka.NaborAddTovar.Label1.Caption <> '' then
-                  begin
-                    Query.Filter:=Query.Filter + MlekoBlkParamPrivyazka.NaborAddTovar.Memo1.Lines.Text;
-                    Query.Filtered:=True;
-                  end
-               else Query.Filtered:=False;
+//   if   Meko_Blanc_Price.BLANC_PRICE.Y_N_Label.Caption = 'Y' then
+//         begin
+//           Query.Filter:=Query.Filter + Meko_Blanc_Price.BLANC_PRICE.ITOG_VIDNAME_Memo.Lines.Text;
+//           Query.Filtered:=True;
+//         end
+//         else  if MlekoBlkParamPrivyazka.NaborAddTovar.Label1.Caption <> '' then
+//                  begin
+//                    Query.Filter:=Query.Filter + MlekoBlkParamPrivyazka.NaborAddTovar.Memo1.Lines.Text;
+//                    Query.Filtered:=True;
+//                  end
+//               else Query.Filtered:=False;
  end;
 
 

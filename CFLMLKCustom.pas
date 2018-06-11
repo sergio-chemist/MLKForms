@@ -26,7 +26,8 @@ var
 
 implementation
 
-uses CFLMLKSelect, MlkData, UtilsDataConvert, UtilsCommon, BCDbMSSQL;
+uses CFLMLKSelect, MlkData, MlkDbUtils, MlkDBComboEdit,
+     UtilsDataConvert, UtilsCommon, BCDbMSSQL;
 
 {$R *.dfm}
 
@@ -36,39 +37,39 @@ var
   l_res_sql, l_param_code, l_query_filter, l_param_name, l_owner
     , lv_key_field, lv_txt_field, lv_table_name, lv_select_entity_class, l_style: string;
   is_multiselect: boolean;
-//  c: TcitDBComboEdit;
+  c: TMlkDbComboEdit;
 begin
   inherited;
-//  c := (Sender as TcitDBComboEdit);
-//  l_owner := c.Owner;
-//  l_param_name := UpperCase(c.Name);
-//  l_param_code := c.EntityCode;
-//  l_style := 'unknown';
-//  l_query_filter := dmDataModule.parse_flt_sql(c.SqlFilter, l_owner, l_param_name);
-//  is_multiselect := c.multiselect;
-//  result := TCFLMLKSelectDlg.OpenHoldSelect(l_Owner, l_param_name, l_param_code, is_multiselect, l_query_filter, l_style);
-//  if result then dmDataModule.set_entity_value(c);
+  c := (Sender as TMlkDbComboEdit);
+  l_owner := c.Owner;
+  l_param_name := UpperCase(c.Name);
+  l_param_code := c.EntityCode;
+  l_style := 'unknown';
+  l_query_filter := dmDataModule.parse_flt_sql(c.SqlFilter, l_owner, l_param_name);
+  is_multiselect := c.MultiSelect;
+  Result := TCFLMLKSelectDlg.OpenHoldSelect(l_Owner, l_param_name, l_param_code, is_multiselect, l_query_filter, l_style);
+  if Result then MlkDbUtils.set_entity_value(c);
 end;
 
 procedure TCFLMLKCustomForm.FormShow(Sender: TObject);
 var
   i: integer;
   l_entity_code: string;
-//  c: TCitDbComboEdit;
+  c: TMlkDbComboEdit;
 begin
   inherited;
-//  for i := 0 to ComponentCount - 1 do
-//  begin
-//    if (Components[i] is TCitDbComboEdit) then
-//    begin
-//      c := (Components[i] as TCitDbComboEdit);
-//      if not varIsnull(c.EntityCode) then c.OnIsSelect := ParamIsSelect;
-//    end;
-//    if (Components[i] is TCustomDADataSet) then
-//      if Assigned(MainDm) then
-//       if not Assigned(TCustomDADataSet(Components[i]).Connection) then
-//        TCustomDADataSet(Components[i]).Connection := TBCDbMSSQLDm(MainDm).DB;
-//  end;
+  for i := 0 to ComponentCount - 1 do
+  begin
+    if (Components[i] is TMlkDbComboEdit) then
+    begin
+      c := (Components[i] as TMlkDbComboEdit);
+      if not varIsnull(c.EntityCode) then c.OnIsSelect := ParamIsSelect;
+    end;
+    if (Components[i] is TCustomDADataSet) then
+      if Assigned(MainDm) then
+       if not Assigned(TCustomDADataSet(Components[i]).Connection) then
+        TCustomDADataSet(Components[i]).Connection := TBCDbMSSQLDm(MainDm).DB;
+  end;
 end;
 
 procedure TCFLMLKCustomForm.CreateControlsToParent(prop_dlg_id: Integer; aParent: TWinControl; pParams: TParams);
@@ -138,7 +139,7 @@ end;
 
 function TCFLMLKCustomForm.CreateChildControl(aParent: TWinControl; Data_type_code: string; Params: TParams; Value: string): TComponent;
 var
-//  cit: TCitDbComboEdit;
+//  cit: TMlkDbComboEdit;
 //  ch: TCheckBox;
 //  cxDate: TCxDateEdit;
   c: TWinControl;
@@ -163,7 +164,7 @@ begin
 //    or (Data_type_code = 'TEXT')
 //    or (Data_type_code = 'TIME') then
 //  begin
-//    cit := TCitDbComboEdit.Create(Self);
+//    cit := TMlkDbComboEdit.Create(Self);
 //    cit.Parent := aParent;
 //    cit.EntityCode := l_entityCode;
 //    cit.multiselect := StrToBool(params.ParamValues['is_multiselect']);
@@ -244,12 +245,12 @@ begin
   cw := (FindComponent(p_control_name) as TComponent);
   if cw <> nil then
   begin
-//    if (cw is TcitDBComboEdit) then
+//    if (cw is TMlkDbComboEdit) then
 //    begin
-//      if ((cw as TcitDBComboEdit).Text = '') or ((cw as TcitDBComboEdit).KeyFieldValue = '-1') or ((cw as TcitDBComboEdit).KeyFieldValue = '') then
+//      if ((cw as TMlkDbComboEdit).Text = '') or ((cw as TMlkDbComboEdit).KeyFieldValue = '-1') or ((cw as TMlkDbComboEdit).KeyFieldValue = '') then
 //        result := '-1'
 //      else
-//        result := (cw as TcitDBComboEdit).KeyFieldValue;
+//        result := (cw as TMlkDbComboEdit).KeyFieldValue;
 //    end;
 //    if (cw is TcxDateEdit) then
 //    begin
